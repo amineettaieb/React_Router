@@ -19,7 +19,7 @@ const MovieList = ({movies}) => {
     const { list: listClass } = useStyles()
     return <>
         <Filter {...{ title, rating, setTitle, setRating }} />
-        <div className={listClass}>
+        <div className={listClass }>
             {movies.map((m, key) => ({ ...m, key })).filter(m => m.title.includes(title) && (!rating || m.rating === rating)).map(m => <MovieCard {...m} />)}
         </div>
         {/* <MovieCard key={movies.length} submit={r => setMovies([...movies, r])} /> */}

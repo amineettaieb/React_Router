@@ -16,7 +16,6 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
         <Routes>
           <Route path='/' element={<Filter />} />
           <Route path='movies' element={<MovieList movies={movies} />} />
@@ -26,7 +25,6 @@ function App() {
           </>} />
           <Route path='*' element={<div>Not Found <Link to='/'>Home</Link></div>} />
         </Routes>
-      </BrowserRouter>
     </div>
   );
 }
