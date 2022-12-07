@@ -1,22 +1,22 @@
 import React from "react";
 import MovieCard from "./MovieCard";
-import { useState } from "react"
-import { createUseStyles } from "react-jss"
+import { useState } from "react";
+import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
   list: {
-    background: 'aliceblue',
+    background: "aliceblue",
     paddingTop: 50,
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, 400px)',
-    justifyContent: 'center'
-  }
-})
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, 400px)",
+    justifyContent: "center",
+  },
+});
 
 const MovieList = ({ movies }) => {
-  const [title, setTitle] = useState('')
-  const [rating, setRating] = useState(0)
-  const { list: listClass } = useStyles()
+  const [title, setTitle] = useState("");
+  const [rating, setRating] = useState(0);
+  const { list: listClass } = useStyles();
   return (
     <div
       className={listClass}
@@ -30,7 +30,9 @@ const MovieList = ({ movies }) => {
       {/* {movies.map((movies, i) => (
         <MovieCard key={i} movie={movies} />
       ))} */}
-      {movies.map((m, key) => ({ ...m, key })).filter(m => m.title.includes(title) && (!rating || m.rating === rating)).map(m => <MovieCard {...m} />)}
+      {movies.map((m,i) => (
+          <MovieCard movie={m} key={i} />
+        ))}
     </div>
   );
 };

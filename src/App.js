@@ -1,6 +1,6 @@
 import "./App.css";
 import MovieList from "./Components/MovieList";
-import initialMovies from './Data/movies.data'
+import {ListMovies} from "./data/movies_data";
 import Filter from "./Components/Filter";
 import { useState } from "react";
 // import AddMovie from "./Components/AddMovie";
@@ -9,9 +9,7 @@ import MovieCard from "./Components/MovieCard";
 import Home from "./Pages/Home";
 import Trailler from "./Pages/Trailler";
 
-
 function App() {
-
   const [text, setText] = useState("");
   const [rating, setRating] = useState(5);
   // const filtrage = (text) => {};
@@ -25,11 +23,12 @@ function App() {
   //   console.log(movies);
   //   console.log(newMovie);
   const [movies, setMovies] = useState(() => {
-    return initialMovies
+    return ListMovies;
   });
 
   return (
     <div className="App">
+      <Filter />
       {/* <Routes> */}
       {/* <Route
           path="/"
@@ -44,7 +43,7 @@ function App() {
           }*
         /> */}
       <Routes>
-      <Route
+        <Route
           path="/"
           element={
             <Home
@@ -56,14 +55,29 @@ function App() {
             />
           }
         />
-        <Route path='/' element={<Filter />} />
-        <Route path='Lmovies' element={<MovieList movies={movies} />} />
+        
+        <Route path="/movies" element={<MovieList movies={movies} />} />
 
-        <Route path='add' element={<>
-            <Filter />
-            <MovieCard key={movies.length} submit={r => setMovies([...movies, r])} />
-          </>} />
-        <Route path='*' element={<div>Not Found <Link to='/'>Home</Link></div>} />
+        <Route
+          path="add"
+          element={
+            <>
+             
+              <MovieCard
+                key={movies.length}
+                submit={(r) => setMovies([...movies, r])}
+              />
+            </>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <div>
+              Not Found <Link to="/">Home</Link>
+            </div>
+          }
+        />
         <Route path="/trailler/:id" element={<Trailler movies={movies} />} />
       </Routes>
 

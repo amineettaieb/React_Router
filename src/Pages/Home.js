@@ -1,5 +1,6 @@
 import React from "react";
 import Filter from "../Components/Filter";
+// import Filter from "../Components/Filter";
 import MovieList from "../Components/MovieList";
 const Home = (props) => {
   return (
@@ -10,9 +11,7 @@ const Home = (props) => {
         rating={props.rating}
         setRating={props.setRating}
       /> */}
-      <MovieList
-        movies={props.movies.data.filter(
-          (m, i) =>
+      <MovieList movies={props.movies.filter((m, i) =>
             m.title.toLowerCase().includes(props.text.toLowerCase()) &&
             m.rating === props.rating
         )}
