@@ -1,18 +1,17 @@
-import { Button } from "bootstrap";
 import React, { useState } from "react";
-import Modal from "react-modal";
-Modal.setAppElement("#root");
+import Rate from "./Rate";
 
-const AddMovie = (props) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+const AddMovie = ({ submit, closeModal }) => {
   const [title, setTitle] = useState("");
   const [posterURL, setPosterURL] = useState("");
   const [description, setDescription] = useState("");
   const [rating, setRating] = useState("");
 
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
   const handleAdd = () => {
+    if (!rating) {
+      alert("Please rate at least with 1 star");
+      return;
+    }
     const newMovie = {
       id: Math.floor(Math.random() * 1000),
       title,
@@ -20,23 +19,15 @@ const AddMovie = (props) => {
       description,
       rating: +rating,
     };
-    props.add(newMovie);
+    submit(newMovie);
     setTitle("");
     setPosterURL("");
     setDescription("");
     setRating("");
-    closeModal();
   };
 
   return (
-    <div>
-      <button
-        style={{ margin: "2rem", border: "solid 1px black", padding: "5px" }}
-        onClick={openModal}
-      >
-        add movie
-      </button>
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+    <>
         <h1 style={{ color: "blue" }}>Add Movie</h1>
         <form
           style={{
@@ -70,15 +61,7 @@ const AddMovie = (props) => {
             style={{ color: "#556B2F", border: "solid 1px #556B2F" }}
           ></textarea>
           <h5 style={{ color: "black" }}>Rating:</h5>
-          <input
-            type="number"
-            name="rating"
-            min="1"
-            max="5"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
-            style={{ color: "#556B2F", border: "solid 1px #556B2F" }}
-          />
+          <Rate rating={rating} setRating={setRating} />
         </form>
         <button
           style={{
@@ -91,7 +74,7 @@ const AddMovie = (props) => {
         >
           add
         </button>
-        <button
+        {closeModal && <button
           style={{
             color: "blue",
             margin: "7px",
@@ -101,9 +84,8 @@ const AddMovie = (props) => {
           onClick={closeModal}
         >
           close
-        </button>
-      </Modal>
-    </div>
+        </button>}
+    </>
   );
 };
 

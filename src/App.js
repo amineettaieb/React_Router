@@ -3,54 +3,30 @@ import MovieList from "./Components/MovieList";
 import {ListMovies} from "./data/movies_data";
 import Filter from "./Components/Filter";
 import { useState } from "react";
-// import AddMovie from "./Components/AddMovie";
+import AddMovie from "./Components/AddMovie";
 import { Routes, Route, Link } from "react-router-dom";
-import MovieCard from "./Components/MovieCard";
 import Home from "./Pages/Home";
 import Trailler from "./Pages/Trailler";
 
 function App() {
-  const [text, setText] = useState("");
-  const [rating, setRating] = useState(5);
-  // const filtrage = (text) => {};
-
-  // const add = (newMovie) => {
-  //   movies.push(newMovie);
-  //   console.log(movies);
-  //   console.log(newMovie);
-  // }
-
-  //   console.log(movies);
-  //   console.log(newMovie);
-  const [movies, setMovies] = useState(() => {
+  const [title, setTitle] = useState("");
+  const [rating, setRating] = useState(0);
+  const [allMovies, setMovies] = useState(() => {
     return ListMovies;
   });
 
+  const movies = allMovies.map((m, key) => ({ ...m, key })).filter(m => m.title.toLowerCase().includes(title.toLowerCase()) && (!rating || +m.rating === rating))
+
   return (
+
     <div className="App">
-      <Filter />
-      {/* <Routes> */}
-      {/* <Route
-          path="/"
-          element={
-            <Home
-              text={text}
-              setText={setText}
-              rating={rating}
-              setRating={setRating}
-              movies={movies}
-            />
-          }*
-        /> */}
-      <Routes>
+
+      <Filter {...{ rating, setRating, setTitle, title, setMovies }} />
+           <Routes>
         <Route
           path="/"
           element={
             <Home
-              text={text}
-              setText={setText}
-              rating={rating}
-              setRating={setRating}
               movies={movies}
             />
           }
@@ -63,8 +39,7 @@ function App() {
           element={
             <>
              
-              <MovieCard
-                key={movies.length}
+              <AddMovie
                 submit={(r) => setMovies([...movies, r])}
               />
             </>
@@ -80,22 +55,6 @@ function App() {
         />
         <Route path="/trailler/:id" element={<Trailler movies={movies} />} />
       </Routes>
-
-      {/* </Routes> */}
-      {/* <Filter
-        text={text}
-        setText={setText}
-        rating={rating}
-        setRating={setRating}
-      />
-      <MovieList
-        movies={movies.filter(
-          (movie, i) =>
-            movie.title.toLowerCase().includes(text.toLowerCase()) &&
-            movie.rating == rating
-        )}
-      /> */}
-      {/* <AddMovie add={add} /> */}
     </div>
   );
 }

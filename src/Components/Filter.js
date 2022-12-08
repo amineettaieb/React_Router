@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { createUseStyles } from 'react-jss'
 import Rate from "./Rate";
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { AiOutlineHome, AiOutlineAppstoreAdd, AiOutlineUnorderedList } from 'react-icons/ai'
+import AddMovie from "./AddMovie";
+import Modal from "react-modal";
+Modal.setAppElement("#root");
 
 const useStyles = createUseStyles({
+  active: {},
   filter: {
     padding: [16, 0],
     display: 'flex',
@@ -26,7 +30,7 @@ const useStyles = createUseStyles({
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: '50%',
-      '&:hover': {
+      '&:hover,&$active': {
         color: 'white',
         background: '#777',
       }
@@ -35,31 +39,39 @@ const useStyles = createUseStyles({
 
 })
 
-const Filter = (props,title) => {
-  const handleChange = (e) => {
-    // console.log(e.target.value);
-    props.setText(e.target.value);
-  };
-  const { filter } = useStyles()
-  return (
-    <div className={filter}>
-      <Link to='/'><AiOutlineHome /></Link>
-      <Link to='/movies'><AiOutlineUnorderedList /></Link>
-      <Link to='/add'><AiOutlineAppstoreAdd /></Link>
-      {/* <input
-        style={{ width: "100%", padding: "1rem", color: "blue" }}
-        type="text"
-        value={props.text}
-        onChange={handleChange}
-      /> */}
-      {/* <Rate rating={props.rating} setRating={props.setRating} /> */}
-      {props && <>
-        <input placeholder="Search Title ..." value={title} value={props.text}
-          onChange={e => props.setText(e.target.value)} />
-        <Rate size={24} ratingValue={props.rating} onClick={e => e === props ? props.setRating(0) : props.setRating(e)} />
+const Filter = ({ title, setTitle, rating, setRating, setMovies }) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const { filter, active } = useStyles()
+  const openModal = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setModalIsOpen(true);
+  }
+  const closeModal = () => setModalIsOpen(false);
+  const handleAdd = (r) => {
+    setMovies(movies => [...movies, r])
+    closeModal()
+  }
 
+  return (
+    <>
+    <div className={filter} onClick={() => setModalIsOpen(false)}>
+      <NavLink to='/'><AiOutlineHome /></NavLink>
+      <NavLink to='/movies' className={({ isActive }) => isActive ? active : ''}><AiOutlineUnorderedList /></NavLink>
+      <NavLink to="/add" onClick={openModal} className={({ isActive }) => (isActive || modalIsOpen) ? active : ''}><AiOutlineAppstoreAdd /></NavLink>
+      {setTitle && <>
+        <input placeholder="Search Title ..." value={title} onChange={e => setTitle(e.target.value)} />
+        <Rate rating={rating} setRating={e => e === rating ? setRating(0) : setRating(e)} />
       </>}
     </div>
+    <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+      <AddMovie
+        closeModal={closeModal}
+        submit={handleAdd}
+      />
+    </Modal>
+
+  </>
   );
 };
 export default Filter;

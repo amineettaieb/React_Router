@@ -1,21 +1,35 @@
 import React from "react";
-import Filter from "../Components/Filter";
 // import Filter from "../Components/Filter";
-import MovieList from "../Components/MovieList";
+import MovieCard from "../Components/MovieCard";
+import { createUseStyles } from "react-jss";
+
+const useStyles = createUseStyles({
+  list: {
+    background: 'aliceblue',
+    paddingTop: 50,
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, 400px)',
+    justifyContent: 'center'
+  }
+})
+
 const Home = (props) => {
+  const { list: listClass } = useStyles()
+  const randoms = []
+  for (let i = 0; i < 3; i++) {
+    while (true) {
+      const x = Math.floor(Math.random() * props.movies.length)
+      if (randoms.indexOf(x) === -1) {
+        randoms.push(x)
+        break
+      }
+    }
+  }
   return (
     <div>
-      {/* <Filter
-        text={props.text}
-        setText={props.setText}
-        rating={props.rating}
-        setRating={props.setRating}
-      /> */}
-      <MovieList movies={props.movies.filter((m, i) =>
-            m.title.toLowerCase().includes(props.text.toLowerCase()) &&
-            m.rating === props.rating
-        )}
-      />
+      <div className={listClass}>
+        {randoms.map((i) => <MovieCard key={i} movie={props.movies[i]} />)}
+      </div>
     </div>
   );
 };
