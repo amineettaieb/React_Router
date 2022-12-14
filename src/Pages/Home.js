@@ -17,14 +17,12 @@ const Home = (props) => {
   const { list: listClass } = useStyles()
   const randoms = []
   for (let i = 0; i < 3; i++) {
-    while (true) {
-      const x = Math.floor(Math.random() * props.movies.length)
-      if (randoms.indexOf(x) === -1) {
-        randoms.push(x)
-        break
-      }
+    const x = Math.floor(Math.random() * props.movies.length)
+    if (randoms.indexOf(x) === -1) {
+      randoms.push(x)
+
     }
-  }
+    }
   return (
     <div>
       <div className={listClass}>
